@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-configuration SYSTEM "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+        <mapping class="com.springapp.mvc.Entity.Dish"/>
+        <mapping class="com.springapp.mvc.Entity.Ingredient"/>
+        <mapping class="com.springapp.mvc.Entity.Category"/>
+        <mapping class="com.springapp.mvc.Entity.Comment"/>
+
+    </session-factory>
+</hibernate-configuration>
