@@ -16,7 +16,7 @@ public class Ingredient {
     private String nameOfIngredient;
 
 
-   /* @ManyToMany(mappedBy="ingredientsSet")
+   @ManyToMany(mappedBy="ingredientsSet")
     private Set<Dish> dishSet = new HashSet<Dish>();
 
     public Set<Dish> getDishSet() {
@@ -25,7 +25,7 @@ public class Ingredient {
 
     public void setDishSet(Set<Dish> dishSet) {
         this.dishSet = dishSet;
-    }*/
+    }
 
     public int getId() {
         return id;

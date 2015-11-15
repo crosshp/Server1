@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 public class CategoryController {
@@ -42,5 +43,17 @@ public class CategoryController {
         list.add(String.valueOf(category.getId()));
         list.add(category.getCategory());
         return list;
+    }
+
+    @RequestMapping(value = {"/category/getDishCategoryById/{id}"}, method = RequestMethod.GET)
+    @ResponseBody
+    public ArrayList<ArrayList<String>> getRandomDishes(@PathVariable("id") int id) {
+        return categoryRepository.getDishCategoryByIdJSON(id);
+    }
+
+    @RequestMapping(value = {"/category/getDishByCategory/{category}"}, method = RequestMethod.GET)
+    @ResponseBody
+    public ArrayList<ArrayList<String>> getDishByCategory(@PathVariable("category") int category) {
+        return categoryRepository.getDishByCategoryJSON(category);
     }
 }

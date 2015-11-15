@@ -12,7 +12,19 @@ public class Category {
 
     @Column(name = "nameCategory")
     private String category;
+/*//----------------
+    @ManyToOne
+    @JoinColumn(name ="idDish")
+    private Dish dish;
 
+    public Dish getDish() {
+        return dish;
+    }
+
+    public void setDish(Dish dish) {
+        this.dish = dish;
+    }
+//---------------*/
     public int getId() {
         return id;
     }

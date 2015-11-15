@@ -26,8 +26,8 @@ public class Dish {
 
     @Column(name = "ingridients")
     private String ingredients;
-
-   /* @ManyToMany(cascade = {CascadeType.ALL})
+//------- Dish Ingridient
+    @ManyToMany(cascade = {CascadeType.ALL})
     @JoinTable(name="dishingredient",
             joinColumns={@JoinColumn(name="idDish")},
             inverseJoinColumns={@JoinColumn(name="idIngridient")})
@@ -39,8 +39,32 @@ public class Dish {
 
     public void setIngredientsSet(Set<Ingredient> ingredientsSet) {
         this.ingredientsSet = ingredientsSet;
-    }*/
+    }
+//-------
 
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "comment")
+    private Set<Comment> comments;
+
+    public Set<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(Set<Comment> comments) {
+        this.comments = comments;
+    }
+/*//------
+
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "category")
+    private Set<Category> categories;
+
+    public Set<Category> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(Set<Category> categories) {
+        this.categories = categories;
+    }
+//------------*/
     public int getId() {
         return id;
     }
