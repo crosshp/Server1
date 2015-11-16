@@ -3,6 +3,9 @@ package com.springapp.mvc.Repository;
 import com.mysql.fabric.jdbc.FabricMySQLDriver;
 import com.springapp.mvc.Entity.Dish;
 import org.hibernate.SessionFactory;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,45 +41,58 @@ public class DishRepository {
         return dishSet;
     }
 
-    public ArrayList<List<String>> getRandom20DishesJSON() {
-        ArrayList<List<String>> resultSet = new ArrayList<List<String>>();
+    public String getRandom20DishesJSON() {
+        JSONObject jsonObject = new JSONObject();
+        JSONArray jsonArray = new JSONArray();
         List<Dish> dishSet = getRandom20Dishes();
         Iterator iterator = dishSet.iterator();
-        while (iterator.hasNext()) {
-            Dish dish = (Dish) iterator.next();
-            List<String> set = new ArrayList<String>();
-            set.add(String.valueOf(dish.getId()));
-            set.add(dish.getNameOfDish());
-            set.add(dish.getHref());
-            set.add(dish.getImg());
-            set.add(dish.getSteps());
-            set.add(dish.getIngredients());
-            resultSet.add(set);
+        try {
+            while (iterator.hasNext()) {
+                Dish dish = (Dish) iterator.next();
+                JSONObject object = new JSONObject();
+                object.put("idDish", String.valueOf(dish.getId()));
+                object.put("nameOfDish", dish.getNameOfDish());
+                object.put("href", dish.getHref());
+                object.put("img", dish.getImg());
+                object.put("steps", dish.getSteps());
+                object.put("ingridients", dish.getIngredients());
+                jsonArray.put(object);
+            }
+            jsonObject.put("array", jsonArray);
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
-        return resultSet;
+        return jsonArray.toString();
     }
 
-    public ArrayList<List<String>> getAllDishesJSON() {
-        ArrayList<List<String>> resultSet = new ArrayList<List<String>>();
+    public String getAllDishesJSON() {
+        JSONObject jsonObject = new JSONObject();
+        JSONArray jsonArray = new JSONArray();
         List<Dish> dishSet = getAllDish();
         Iterator iterator = dishSet.iterator();
-        while (iterator.hasNext()) {
-            Dish dish = (Dish) iterator.next();
-            List<String> set = new ArrayList<String>();
-            set.add(String.valueOf(dish.getId()));
-            set.add(dish.getNameOfDish());
-            set.add(dish.getHref());
-            set.add(dish.getImg());
-            set.add(dish.getSteps());
-            set.add(dish.getIngredients());
-            resultSet.add(set);
+        try {
+            while (iterator.hasNext()) {
+                Dish dish = (Dish) iterator.next();
+                JSONObject object = new JSONObject();
+                object.put("idDish", String.valueOf(dish.getId()));
+                object.put("nameOfDish", dish.getNameOfDish());
+                object.put("href", dish.getHref());
+                object.put("img", dish.getImg());
+                object.put("steps", dish.getSteps());
+                object.put("ingridients", dish.getIngredients());
+                jsonArray.put(object);
+                jsonObject.put("array", jsonArray);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
-        return resultSet;
+        return jsonArray.toString();
     }
 
-    public ArrayList<ArrayList<String>> getDishByIngredientsJSON(String ingredients) {
+    public String getDishByIngredientsJSON(String ingredients) {
 
-        ArrayList<ArrayList<String>> arrayLists = new ArrayList<ArrayList<String>>();
+        JSONObject jsonObject = new JSONObject();
+        JSONArray jsonArray = new JSONArray();
         String DB_URL = "jdbc:mysql://127.0.0.1:3306/cook";
         String USER = "root";
         String PASS = "root";
@@ -91,20 +107,21 @@ public class DishRepository {
             sql = "select cook.dish.* from cook.dish,cook.dishingridient,cook.ingridient \n" +
                     "where cook.dish.idDish = dishingridient.idDish \n" +
                     "and dishingridient.idIngridient = ingridient.idIngridient\n" +
-                    "and ingridient.idIngridient in("+ingredients+
+                    "and ingridient.idIngridient in(" + ingredients +
                     ") \n group by cook.dish.idDish\n" +
                     "order by cook.dish.countOfIngredient";
             ResultSet rs = stmt.executeQuery(sql);
             while (rs.next()) {
-                ArrayList<String> arrayList = new ArrayList<String>();
-                arrayList.add(String.valueOf(rs.getInt("idDish")));
-                arrayList.add(rs.getString("nameOfDish"));
-                arrayList.add(rs.getString("href"));
-                arrayList.add(rs.getString("img"));
-                arrayList.add(rs.getString("steps"));
-                arrayList.add(rs.getString("ingridients"));
-                arrayLists.add(arrayList);
+                JSONObject object = new JSONObject();
+                object.put("idDish",String.valueOf(rs.getInt("idDish")));
+                object.put("nameOfDish", rs.getString("nameOfDish"));
+                object.put("href", rs.getString("href"));
+                object.put("img", rs.getString("img"));
+                object.put("steps", rs.getString("steps"));
+                object.put("ingridients", rs.getString("ingridients"));
+                jsonArray.put(object);
             }
+            jsonObject.put("array",jsonArray);
             rs.close();
             stmt.close();
             conn.close();
@@ -128,6 +145,7 @@ public class DishRepository {
                 se.printStackTrace();
             }
         }
-        return arrayLists;
+        return jsonObject.toString();
     }
+
 }

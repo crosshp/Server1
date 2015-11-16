@@ -10,19 +10,29 @@ public class Comment {
     @Column(name = "id")
     private int  id;
 
-    @ManyToOne
-    @JoinColumn(name ="idDish")
-    private Dish dish;
+    @Column(name ="idDish")
+    private int idDish;
 
     @Column(name = "comment")
     private String comment;
 
-    public Comment(String comment, Dish dish){
+
+
+    public Comment(String comment, int idDish){
         this.comment = comment;
-        this.dish = dish;
+        this.idDish = idDish;
+
     }
     public Comment(){
 
+    }
+
+    public int getIdDish() {
+        return idDish;
+    }
+
+    public void setIdDish(int idDish) {
+        this.idDish = idDish;
     }
 
     public int getId() {
@@ -33,13 +43,7 @@ public class Comment {
         this.id = id;
     }
 
-    public Dish getDish() {
-        return dish;
-    }
 
-    public void setDish(Dish dish) {
-        this.dish = dish;
-    }
 
     /* public int getIdDish() {
             return idDish;

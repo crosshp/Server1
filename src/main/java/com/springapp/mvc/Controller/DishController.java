@@ -3,6 +3,9 @@ package com.springapp.mvc.Controller;
 import com.springapp.mvc.Entity.Comment;
 import com.springapp.mvc.Entity.Dish;
 import com.springapp.mvc.Repository.DishRepository;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -10,9 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
 
 
 @Controller
@@ -24,36 +24,42 @@ public class DishController {
         this.dishRepository = dishRepository;
     }
 
-    @RequestMapping(value = {"/dish/random"}, method = RequestMethod.GET)
+    @RequestMapping(value = {"/dish/random"}, method = RequestMethod.GET, produces = {"text/html;charset=utf-8"})
     @ResponseBody
-    public ArrayList<List<String>> getRandomDishes() {
+    public String getRandomDishes() {
         return dishRepository.getRandom20DishesJSON();
     }
 
-    @RequestMapping(value = {"/dish/getAll"}, method = RequestMethod.GET)
+    @RequestMapping(value = {"/dish/getAll"}, method = RequestMethod.GET, produces = {"text/html;charset=utf-8"})
     @ResponseBody
-    public ArrayList<List<String>> getAllDishes() {
+    public String getAllDishes() {
         return dishRepository.getAllDishesJSON();
     }
 
-    @RequestMapping(value = {"/dish/commentDishById/{id}"}, method = RequestMethod.GET)
+    @RequestMapping(value = {"/dish/commentDishById/{id}"}, method = RequestMethod.GET, produces = {"text/html;charset=utf-8"})
     @ResponseBody
-    public ArrayList<ArrayList<String>> printWelcome2(@PathVariable("id") int id) {
+    public String commentDishById(@PathVariable("id") int id) {
         Dish dish = dishRepository.getDishById(id);
-        ArrayList<ArrayList<String>> list = new ArrayList<ArrayList<String>>();
-        for (Comment comment : dish.getComments()) {
-            ArrayList<String> records = new ArrayList<String>();
-            records.add(String.valueOf(String.valueOf(comment.getId())));
-            records.add(comment.getComment());
-            records.add(String.valueOf(comment.getDish().getId()));
-            list.add(records);
+        JSONObject jsonObject = new JSONObject();
+        JSONArray jsonArray = new JSONArray();
+        try {
+            for (Comment comment : dish.getComments()) {
+                JSONObject object = new JSONObject();
+                object.put("id", String.valueOf(comment.getId()));
+                object.put("comment", comment.getComment());
+                object.put("idDish", String.valueOf(comment.getIdDish()));
+                jsonArray.put(object);
+            }
+            jsonObject.put("array", jsonArray);
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
-        return list;
+        return jsonObject.toString();
     }
 
-    @RequestMapping(value = {"/dish/getByIngredients/{ingredients}"}, method = RequestMethod.GET)
+    @RequestMapping(value = {"/dish/getByIngredients/{ingredients}"}, method = RequestMethod.GET, produces = {"text/html;charset=utf-8"})
     @ResponseBody
-    public ArrayList<ArrayList<String>> getRandomDishes(@PathVariable("ingredients") String ingredients) {
+    public String getRandomDishes(@PathVariable("ingredients") String ingredients) {
         return dishRepository.getDishByIngredientsJSON(ingredients);
     }
 }

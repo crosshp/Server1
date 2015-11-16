@@ -20,10 +20,15 @@ public class CommentRepository {
     }
 
     public Comment getCommentById(int id) {
-        return (Comment) sessionFactory.getCurrentSession().get(Comment.class,id);
+        return (Comment) sessionFactory.getCurrentSession().get(Comment.class, id);
     }
 
-    public List<Object[]> getCommentByDishId(int id){
-        return (List<Object[]>)sessionFactory.getCurrentSession().createSQLQuery("select comment.id,comment.comment,comment.idDish FROM cook.comment,cook.dish where comment.idDish = dish.idDish;").list();
+    public List<Object[]> getCommentByDishId(int id) {
+        return (List<Object[]>) sessionFactory.getCurrentSession().createSQLQuery("select comment.id,comment.comment,comment.idDish FROM cook.comment,cook.dish where comment.idDish = dish.idDish" +
+                " and dish.idDish = " + id + ";").list();
+    }
+
+    public void addNewComment(Comment comment) {
+        sessionFactory.getCurrentSession().save(comment);
     }
 }
