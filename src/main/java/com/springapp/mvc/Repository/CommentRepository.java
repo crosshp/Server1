@@ -1,7 +1,6 @@
 package com.springapp.mvc.Repository;
 
 import com.springapp.mvc.Entity.Comment;
-import org.hibernate.SQLQuery;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;

@@ -62,7 +62,7 @@ public class DishRepository {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        return jsonArray.toString();
+        return jsonObject.toString();
     }
 
     public String getAllDishesJSON() {
@@ -86,7 +86,7 @@ public class DishRepository {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        return jsonArray.toString();
+        return jsonObject.toString();
     }
 
     public String getDishByIngredientsJSON(String ingredients) {
